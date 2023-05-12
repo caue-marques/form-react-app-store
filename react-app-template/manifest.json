@@ -1,9 +1,9 @@
 {
   "vendor": "vtex",
-  "name": "hello",
+  "name": "form-react",
   "version": "0.0.0",
-  "title": "hello",
-  "description": "hello",
+  "title": "form-react",
+  "description": "form-react",
   "builders": {
     "react": "3.x",
     "messages": "1.x",
