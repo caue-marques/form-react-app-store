@@ -1,6 +1,6 @@
 import React from "react"
 
-const HelloWorld = () => {
+const HelloWorld: StorefrontFunctionComponent = () => {
   return (
     <div>
         <h1>Hello World!</h1>
