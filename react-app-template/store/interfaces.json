@@ -1,5 +1,5 @@
 {
-    "hello-world": {
-        "component": "HelloWorld"
+    "search-form": {
+        "component": "SearchSKUForm"
     }
 }
