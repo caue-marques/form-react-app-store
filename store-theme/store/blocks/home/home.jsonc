@@ -1,7 +1,8 @@
 {
   "store.home": {
     "blocks": [
-      "search-form"
+      "search-form",
+      "send-review"
     ]
   },
 
