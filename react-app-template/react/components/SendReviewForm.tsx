@@ -15,30 +15,31 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
 
     const sendReview = async (e: any) => {
         e.preventDefault()
+        setSucesso(false)
+
+        let productIsEmpty = false
+        let dataIsEmpty = false
+        let usuarioIsEmpty = false
+        let notaIsEmpty = false
 
         if (!produto)
-            setProdutoVazio(true)
+            productIsEmpty = true
 
         if (!data)
-            setDataVazia(true)
+            dataIsEmpty = true
 
         if (!usuario)
-            setUsuarioVazio(true)
+            usuarioIsEmpty = true
 
         if (!nota)
-            setNotaVazia(true)
+            notaIsEmpty = true
+
+        setProdutoVazio(productIsEmpty)
+        setDataVazia(dataIsEmpty)
+        setUsuarioVazio(usuarioIsEmpty)
+        setNotaVazia(notaIsEmpty)
             
-        if(!produto || !data || !usuario ||!nota) {
-            setInterval(() => {
-                setProdutoVazio(false)
-                setDataVazia(false)
-                setUsuarioVazio(false)
-                setNotaVazia(false)
-            }, 3000)
-
-            return
-        }
-
+        if(!produto || !data || !usuario ||!nota) return
 
         await fetch(`/api/dataentities/Reviews/documents?_schema=Reviews`, {
             headers: {
@@ -58,10 +59,6 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
             })
             .then(() => {
                 setSucesso(true)
-
-                setInterval(() => {
-                    setSucesso(false)
-                }, 5000)
             })
     }
 

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
 const SearchSKUForm: StorefrontFunctionComponent = () => {
 
-    const product = {
+    const defaultProduct = {
         'id_sku': '',
         'titulo': '',
         'data': '',
@@ -10,53 +10,36 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
         'produtos': 0
     }
 
-    const [result, setResult] = useState(product)
+    const [product, setProduct] = useState(defaultProduct)
     const [id, setId] = useState('')
-    const [erro, setErro] = useState(false)
+    const [idNotSent, setIdNotSent] = useState(false)
     const [notFound, setNotFound] = useState(false)
 
-    const resetResult = () => {
-        setResult(product)
-        console.log(result)
+    const resetProduct = () => {
+        setProduct(defaultProduct)
     }
 
-    function validateIdHasBeenSent(): boolean {
-        if (!id) {
-            setNotFound(false)
-            setErro(true)
-
-            setInterval(() => {
-                setErro(false)
-            }, 6000)
-
-            return false
-        }
-
-        return true
-    }
-
-    function resultHasBeenSet(): boolean {
-        if (!result.id_sku) {
-            setNotFound(true)
-            setErro(false)
-
-            setInterval(() => {
-                setNotFound(false)
-            }, 6000)
-
-            return false;
-        }
-
-        return true
+    const resetStatus = () => {
+        setIdNotSent(false)
+        setNotFound(false)
     }
 
     const searchSku = async (e: any) => {
         e.preventDefault()
 
-        resetResult()
+        resetProduct()
+        resetStatus()
 
-        validateIdHasBeenSent()
-        if (!validateIdHasBeenSent()) return
+        let idNotSent = false
+
+        if (!id) idNotSent = true 
+
+        setIdNotSent(idNotSent)
+
+        if(idNotSent) return
+
+        let searchProduct = defaultProduct
+        let productFound = false
 
         await fetch(`/api/dataentities/Receitas/search/?_fields=id_sku,titulo,data,conteudo,produtos`)
             .then(data => {
@@ -65,20 +48,26 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
             .then(skus => {
                 for (let sku of skus) {
                     if (sku.produtos == id) {
-                        setNotFound(false)
-                        setErro(false)
-                        setResult(sku)
-                        return
+                        searchProduct = sku
+                        productFound = true
+                        idNotSent = false
+                        break
                     }
                 }
-                resultHasBeenSet()
+
+                setProduct(searchProduct)
+                setNotFound(!productFound)
+                setIdNotSent(idNotSent)
             })
     }
 
     const searchMostRecentSku = async (e: any) => {
         e.preventDefault()
 
-        resetResult()
+        resetProduct()
+        resetStatus()
+
+        let finalMostRecentReceipe = defaultProduct
 
         await fetch(`/api/dataentities/Receitas/search/?_fields=id_sku,titulo,data,conteudo,produtos`)
             .then(data => {
@@ -93,15 +82,13 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
 
                     if (currentDate > dateMostRecente) {
                         dateMostRecente = currentDate
-                        setResult(sku)
+                        finalMostRecentReceipe = sku
                     }
                 }
+
+                setProduct(finalMostRecentReceipe)
             })
     }
-
-    useEffect(()=>{
-       
-    },[resetResult] )
 
     return (
         <div>
@@ -111,8 +98,8 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
                 <button type="submit" className="pointer ml5 h2 bg-blue ba b--black-10" onClick={searchMostRecentSku}>Buscar Receita Mais Recente</button>
             </form>
 
-            {erro && <div className="red w-50 mt7 center tc b">Não é possível buscar uma receita sem informar o ID</div>}
-            {notFound && <div className="red w-50 mt7 center tc b">ID não encontrado</div>}
+            {idNotSent && <div className="red w-50 mt7 center tc b">Não é possível buscar uma receita sem informar o ID</div>}
+            {notFound && <div className="red w-50 mt7 center tc b">Produto não encontrado para o ID informado</div>}
 
 
             <table className="center mt6 w-75">
@@ -127,11 +114,11 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
                 </thead>
                 <tbody>
                     <tr className="tc">
-                        <td className="pr7">{result.id_sku || ''}</td>
-                        <td className="pr7">{result.titulo || ''}</td>
-                        <td className="pr7">{result.data || ''}</td>
-                        <td className="pr7">{result.conteudo || ''}</td>
-                        <td className="pr7">{result.produtos || ''}</td>
+                        <td className="pr7">{product.id_sku || ''}</td>
+                        <td className="pr7">{product.titulo || ''}</td>
+                        <td className="pr7">{product.data || ''}</td>
+                        <td className="pr7">{product.conteudo || ''}</td>
+                        <td className="pr7">{product.produtos || ''}</td>
                     </tr>
                 </tbody>
             </table>
