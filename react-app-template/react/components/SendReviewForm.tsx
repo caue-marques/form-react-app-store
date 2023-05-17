@@ -5,7 +5,11 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
 
     const productContextValue = useProduct()
 
+    //utilizar caso não seja utilizado o useProduct()
+
     //const [produto, setProduto] = useState('');
+
+
     const [data, setData] = useState('');
     const [usuario, setUsuario] = useState('');
     const [nota, setNota] = useState('');
@@ -25,6 +29,8 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
         let usuarioIsEmpty = false
         let notaIsEmpty = false
 
+        //utilizar caso não seja utilizado o useProduct()
+
         // if (!produto)
         //     productIsEmpty = true
 
@@ -42,6 +48,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
         setUsuarioVazio(usuarioIsEmpty)
         setNotaVazia(notaIsEmpty)
             
+        //incluir !produto caso não seja utilizado o useProduct()
         if(!data || !usuario ||!nota) return
 
         await fetch(`/api/dataentities/Reviews/documents?_schema=Reviews`, {
@@ -50,6 +57,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
             },
             method: "POST",
             body: JSON.stringify({
+                //utilizar produto caso não seja utilizad o useProduct()
                 'produto': productContextValue?.selectedItem?.itemId,
                 'data': data,
                 'usuario': usuario,
