@@ -1,8 +1,11 @@
 import React, { useState } from "react"
+import { useProduct } from 'vtex.product-context'
 
 const SendReviewForm: StorefrontFunctionComponent = () => {
 
-    const [produto, setProduto] = useState('');
+    const productContextValue = useProduct()
+
+    //const [produto, setProduto] = useState('');
     const [data, setData] = useState('');
     const [usuario, setUsuario] = useState('');
     const [nota, setNota] = useState('');
@@ -22,8 +25,8 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
         let usuarioIsEmpty = false
         let notaIsEmpty = false
 
-        if (!produto)
-            productIsEmpty = true
+        // if (!produto)
+        //     productIsEmpty = true
 
         if (!data)
             dataIsEmpty = true
@@ -39,7 +42,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
         setUsuarioVazio(usuarioIsEmpty)
         setNotaVazia(notaIsEmpty)
             
-        if(!produto || !data || !usuario ||!nota) return
+        if(!data || !usuario ||!nota) return
 
         await fetch(`/api/dataentities/Reviews/documents?_schema=Reviews`, {
             headers: {
@@ -47,7 +50,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
             },
             method: "POST",
             body: JSON.stringify({
-                'produto': produto,
+                'produto': productContextValue?.selectedItem?.itemId,
                 'data': data,
                 'usuario': usuario,
                 'nota': nota,
@@ -66,7 +69,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
         <div>
             <form className="mt7 w-50 flex center flex-column items-center">
                 <label className="db mb2" htmlFor="sku">Produto avaliado:</label>
-                <input className="w-25 h2 ba b--black-80 db mb2" type="number" value={produto} name="sku" id="sku" placeholder="Produto" onChange={(e) => setProduto(e.target.value)} />
+                <input className="w-25 h2 ba b--black-80 db mb2" type="text" value={productContextValue?.selectedItem?.itemId} name="sku" id="sku" placeholder="Produto" disabled={true}/>
                 {produtoVazio && <div className="f6 lh-copy tc red b">Campo Vazio</div>}
 
                 <label className="db mb2" htmlFor="data">Data:</label>

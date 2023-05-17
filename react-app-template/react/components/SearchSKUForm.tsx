@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { Fragment, useState } from "react"
+import { useProduct } from 'vtex.product-context'
 
 const SearchSKUForm: StorefrontFunctionComponent = () => {
 
@@ -9,6 +10,9 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
         'conteudo': '',
         'produtos': 0
     }
+
+    const productContextValue = useProduct()
+    console.log(productContextValue)
 
     const [product, setProduct] = useState(defaultProduct)
     const [id, setId] = useState('')
@@ -32,11 +36,11 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
 
         let idNotSent = false
 
-        if (!id) idNotSent = true 
+        if (!id) idNotSent = true
 
         setIdNotSent(idNotSent)
 
-        if(idNotSent) return
+        if (idNotSent) return
 
         let searchProduct = defaultProduct
         let productFound = false
@@ -112,15 +116,30 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
                         <th className="pr7">SKU</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr className="tc">
-                        <td className="pr7">{product.id_sku || ''}</td>
-                        <td className="pr7">{product.titulo || ''}</td>
-                        <td className="pr7">{product.data || ''}</td>
-                        <td className="pr7">{product.conteudo || ''}</td>
-                        <td className="pr7">{product.produtos || ''}</td>
-                    </tr>
-                </tbody>
+                {product.id_sku &&
+                    <tbody>
+                        <tr className="tc">
+                            <td className="pr7">{product.id_sku || ''}</td>
+                            <td className="pr7">{product.titulo || ''}</td>
+                            <td className="pr7">{product.data || ''}</td>
+                            <td className="pr7">{product.conteudo || ''}</td>
+                            <td className="pr7">{product.produtos || ''}</td>
+                        </tr>
+                    </tbody>
+                }
+                {productContextValue &&
+                    <Fragment>
+                        <tbody>
+                            <tr className="tc">
+                                <td className="pr7">{productContextValue?.product?.productId}</td>
+                                <td className="pr7">{productContextValue?.product?.productName}</td>
+                                <td className="pr7">{productContextValue?.product?.description}</td>
+                                <td className="pr7">{productContextValue?.product?.description}</td>
+                                <td className="pr7">{productContextValue?.selectedItem?.itemId}</td>
+                            </tr>
+                        </tbody>
+                    </Fragment>
+                }
             </table>
         </div>
     )
