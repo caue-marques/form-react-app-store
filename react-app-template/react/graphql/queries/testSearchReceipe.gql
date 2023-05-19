@@ -1,0 +1,9 @@
+query SearchReceipe {
+  documents(acronym: "Receitas", fields: ["id", "titulo", "data", "conteudo", "produtos"], account: "estagioacct") {
+    id,
+    fields {
+      key
+      value
+    }
+  }
+}

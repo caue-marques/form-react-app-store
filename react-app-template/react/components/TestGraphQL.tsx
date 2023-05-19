@@ -1,7 +1,9 @@
-import React, { Fragment, useState } from "react"
-import { useProduct } from 'vtex.product-context'
+import React, { useState } from "react"
+//import { useProduct } from 'vtex.product-context'
+import { useQuery } from "react-apollo";
+import SearchReceipe from '../graphql/queries/testSearchReceipe.gql'
 
-const SearchSKUForm: StorefrontFunctionComponent = () => {
+const TestGraphQL: StorefrontFunctionComponent = () => {
 
     const defaultProduct = {
         'id_sku': '',
@@ -11,8 +13,14 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
         'produtos': 0
     }
 
-    const productContextValue = useProduct()
-    console.log(productContextValue)
+    const {data} = useQuery(SearchReceipe, {ssr: false})
+    console.log(data)
+    console.log(data)
+    console.log(data)
+    console.log(data)
+
+    //const productContextValue = useProduct()
+    //console.log(productContextValue)
 
     const [product, setProduct] = useState(defaultProduct)
     const [id, setId] = useState('')
@@ -101,10 +109,8 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
                 <button type="submit" className="pointer ml5 h2 bg-green ba b--black-10" onClick={searchSku}>Buscar Receita</button>
                 <button type="submit" className="pointer ml5 h2 bg-blue ba b--black-10" onClick={searchMostRecentSku}>Buscar Receita Mais Recente</button>
             </form>
-
             {idNotSent && <div className="red w-50 mt7 center tc b">Não é possível buscar uma receita sem informar o ID</div>}
             {notFound && <div className="red w-50 mt7 center tc b">Produto não encontrado para o ID informado</div>}
-
 
             <table className="center mt6 w-75">
                 <thead className="f4 lh-copy">
@@ -127,22 +133,9 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
                         </tr>
                     </tbody>
                 }
-                {productContextValue &&
-                    <Fragment>
-                        <tbody>
-                            <tr className="tc">
-                                <td className="pr7">{productContextValue?.product?.productId}</td>
-                                <td className="pr7">{productContextValue?.product?.productName}</td>
-                                <td className="pr7">{productContextValue?.product?.description}</td>
-                                <td className="pr7">{productContextValue?.product?.description}</td>
-                                <td className="pr7">{productContextValue?.selectedItem?.itemId}</td>
-                            </tr>
-                        </tbody>
-                    </Fragment>
-                }
             </table>
         </div>
     )
 };
 
-export default SearchSKUForm;
+export default TestGraphQL;

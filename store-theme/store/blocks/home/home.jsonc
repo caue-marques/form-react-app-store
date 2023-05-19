@@ -2,7 +2,8 @@
   "store.home": {
     "blocks": [
       "search-form",
-      "send-review"
+      "send-review",
+      "test-graphql"
     ]
   },
 

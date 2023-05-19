@@ -64,6 +64,7 @@
     "vtex.condition-layout": "2.x",
     "vtex.css-handles": "1.x",
     "vtex.product-context": "0.x",
+    "vtex.store-graphql": "2.x",
     "estagioacct.form-react": "0.x"
   },
   "peerDependencies": {
