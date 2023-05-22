@@ -2527,9 +2527,9 @@ esprima@^4.0.0, esprima@^4.0.1:
   resolved "https://registry.npmjs.org/esprima/-/esprima-4.0.1.tgz"
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
 
-"estagioacct.form-react@https://cauemarquesreact--estagioacct.myvtex.com/_v/private/typings/linked/v1/estagioacct.form-react@0.0.1+build1684341365/public/@types/estagioacct.form-react":
+"estagioacct.form-react@https://cauemarquesreact--estagioacct.myvtex.com/_v/private/typings/linked/v1/estagioacct.form-react@0.0.1+build1684764868/public/@types/estagioacct.form-react":
   version "0.0.1"
-  resolved "https://cauemarquesreact--estagioacct.myvtex.com/_v/private/typings/linked/v1/estagioacct.form-react@0.0.1+build1684341365/public/@types/estagioacct.form-react#e9c2e3a5300ec339ff8bedae1b7003178afabf38"
+  resolved "https://cauemarquesreact--estagioacct.myvtex.com/_v/private/typings/linked/v1/estagioacct.form-react@0.0.1+build1684764868/public/@types/estagioacct.form-react#dd8e498d02215ba5f26c1f0fa2b04460c79f46b7"
 
 estraverse@^4.2.0:
   version "4.3.0"
@@ -5390,6 +5390,10 @@ verror@1.10.0:
 "vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime":
   version "8.132.4"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime#66bb41bd4d342e37c9d85172aad5f7eefebfb6dc"
+
+"vtex.store-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.161.3/public/@types/vtex.store-graphql":
+  version "2.161.3"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.161.3/public/@types/vtex.store-graphql#4db8fb38d92864f7aefddfce15995ab90ddb7fd1"
 
 "vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.4/public/@types/vtex.styleguide":
   version "9.146.4"

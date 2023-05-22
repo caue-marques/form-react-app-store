@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from "react"
 import { useProduct } from 'vtex.product-context'
+import { useQuery } from "react-apollo";
+import SearchReceipe from '../graphql/queries/testSearchReceipe.gql'
 
 const SearchSKUForm: StorefrontFunctionComponent = () => {
 
@@ -11,8 +13,11 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
         'produtos': 0
     }
 
+    const {data} = useQuery(SearchReceipe, {ssr: false})
+    
+    // console.log(data)
+    
     const productContextValue = useProduct()
-    console.log(productContextValue)
 
     const [product, setProduct] = useState(defaultProduct)
     const [id, setId] = useState('')
@@ -45,24 +50,42 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
         let searchProduct = defaultProduct
         let productFound = false
 
-        await fetch(`/api/dataentities/Receitas/search/?_fields=id_sku,titulo,data,conteudo,produtos`)
-            .then(data => {
-                return data.json()
-            })
-            .then(skus => {
-                for (let sku of skus) {
-                    if (sku.produtos == id) {
-                        searchProduct = sku
-                        productFound = true
-                        idNotSent = false
-                        break
-                    }
-                }
+        for(let i = 0; i < data.documents.length; i++) {
+            if (data.documents[i].fields[1].value == id) {
+                searchProduct.id_sku = data.documents[i].fields[1].value
+                searchProduct.titulo = data.documents[i].fields[2].value
+                searchProduct.data = data.documents[i].fields[3].value
+                searchProduct.conteudo = data.documents[i].fields[4].value
+                searchProduct.produtos = data.documents[i].fields[5].value
+                productFound = true
+                idNotSent = false
+                break
+            }
+        }
 
-                setProduct(searchProduct)
-                setNotFound(!productFound)
-                setIdNotSent(idNotSent)
-            })
+        setProduct(searchProduct)
+        setNotFound(!productFound)
+        setIdNotSent(idNotSent)
+
+
+        // await fetch(`/api/dataentities/Receitas/search/?_fields=id_sku,titulo,data,conteudo,produtos`)
+        //     .then(data => {
+        //         return data.json()
+        //     })
+        //     .then(skus => {
+        //         for (let sku of skus) {
+        //             if (sku.produtos == id) {
+        //                 searchProduct = sku
+        //                 productFound = true
+        //                 idNotSent = false
+        //                 break
+        //             }
+        //         }
+
+        //         setProduct(searchProduct)
+        //         setNotFound(!productFound)
+        //         setIdNotSent(idNotSent)
+        //     })
     }
 
     const searchMostRecentSku = async (e: any) => {
@@ -73,25 +96,42 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
 
         let finalMostRecentReceipe = defaultProduct
 
-        await fetch(`/api/dataentities/Receitas/search/?_fields=id_sku,titulo,data,conteudo,produtos`)
-            .then(data => {
-                return data.json()
-            })
-            .then(skus => {
-                let mostRecentReceipe = skus[0]
-                let dateMostRecente = new Date(mostRecentReceipe.data)
+        let mostRecentReceipe = data.documents[0].fields
+        let dateMostRecente = new Date(mostRecentReceipe[3].value)
 
-                for (let sku of skus) {
-                    let currentDate = new Date(sku.data)
+        for(let i = 0; i < data.documents.length; i++) {
+            let currentDate = new Date(data.documents[i].fields[3].value)
 
-                    if (currentDate > dateMostRecente) {
-                        dateMostRecente = currentDate
-                        finalMostRecentReceipe = sku
-                    }
-                }
+            if (currentDate > dateMostRecente) {
+                dateMostRecente = currentDate
+                finalMostRecentReceipe.id_sku = data.documents[i].fields[1].value
+                finalMostRecentReceipe.titulo = data.documents[i].fields[2].value
+                finalMostRecentReceipe.data = data.documents[i].fields[3].value
+                finalMostRecentReceipe.conteudo = data.documents[i].fields[4].value
+                finalMostRecentReceipe.produtos = data.documents[i].fields[5].value
+            }
+        }
+        setProduct(finalMostRecentReceipe)
 
-                setProduct(finalMostRecentReceipe)
-            })
+        // await fetch(`/api/dataentities/Receitas/search/?_fields=id_sku,titulo,data,conteudo,produtos`)
+        //     .then(data => {
+        //         return data.json()
+        //     })
+        //     .then(skus => {
+        //         let mostRecentReceipe = skus[0]
+        //         let dateMostRecente = new Date(mostRecentReceipe.data)
+
+        //         for (let sku of skus) {
+        //             let currentDate = new Date(sku.data)
+
+        //             if (currentDate > dateMostRecente) {
+        //                 dateMostRecente = currentDate
+        //                 finalMostRecentReceipe = sku
+        //             }
+        //         }
+
+        //         setProduct(finalMostRecentReceipe)
+        //     })
     }
 
     return (

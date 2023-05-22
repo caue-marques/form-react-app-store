@@ -4,8 +4,5 @@
     },
     "send-review": {
         "component": "SendReviewForm"
-    },
-    "test-graphql": {
-        "component": "TestGraphQL"
     }
 }
