@@ -57,12 +57,12 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
 
         data({
             variables: {
-                dataEntity: "Reviews",
+                dataEntity: "Teste2Reviews",
                 account: "estagioacct",
-                schema: "Reviews",
+                schema: "Ratings",
                 document: {
                     document: {
-                        userName: usuario,
+                        usuario: usuario,
                         data: date,
                         nota: nota,
                         comentario: comentario,
@@ -70,8 +70,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
                     },
                 },
             },
-        }).then((dados) => {
-            console.log(dados)
+        }).then(() => {
             setSucesso(true)
         })
     
