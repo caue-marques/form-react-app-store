@@ -31,7 +31,7 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
     produtos: '',
   }
 
-  const [product, setProduct] = useState({})
+  const [product, setProduct] = useState(emptyFields)
 
   const [id, setId] = useState('')
   const [idNotSent, setIdNotSent] = useState(false)
@@ -55,7 +55,6 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
 
     if (!id) {
       setIdNotSent(true)
-
       return
     }
 
@@ -111,52 +110,38 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
     //     })
   }
 
-  // const searchMostRecentSku = async (e: any) => {
-  //   e.preventDefault()
+   const searchMostRecentSku = async (e: FormEvent) => {
+     e.preventDefault()
 
-  //   resetProduct()
-  //   resetStatus()
+     resetProduct()
+     resetStatus()
 
-  //   const finalMostRecentReceipe = defaultProduct
+     await refetch()
 
-  //   const mostRecentReceipe = data.documents[0].fields
-  //   let dateMostRecente = new Date(mostRecentReceipe[3].value)
+     if (!data || loading) {
+      return
+    }
 
-  //   for (let i = 0; i < data.documents.length; i++) {
-  //     const currentDate = new Date(data.documents[i].fields[3].value)
+    const mostRecenteReceipe = data.documents.reduce((a,b) => a.fields[3].value > b.fields[3].value ? a : b).fields
 
-  //     if (currentDate > dateMostRecente) {
-  //       dateMostRecente = currentDate
-  //       finalMostRecentReceipe.id_sku = data.documents[i].fields[1].value
-  //       finalMostRecentReceipe.titulo = data.documents[i].fields[2].value
-  //       finalMostRecentReceipe.data = data.documents[i].fields[3].value
-  //       finalMostRecentReceipe.conteudo = data.documents[i].fields[4].value
-  //       finalMostRecentReceipe.produtos = data.documents[i].fields[5].value
-  //     }
-  //   }
+    const findFieldValue = (key: string) => {
+      return (
+        mostRecenteReceipe.find((productFields) => productFields.key === key)
+          ?.value ?? ''
+      )
+    }
 
-  //   setProduct(finalMostRecentReceipe)
+    const extractedFields = {
+      id: findFieldValue('id'),
+      id_sku: findFieldValue('id_sku'),
+      titulo: findFieldValue('titulo'),
+      data: findFieldValue('data'),
+      conteudo: findFieldValue('conteudo'),
+      produtos: findFieldValue('produtos'),
+    }
 
-  //   // await fetch(`/api/dataentities/Receitas/search/?_fields=id_sku,titulo,data,conteudo,produtos`)
-  //   //     .then(data => {
-  //   //         return data.json()
-  //   //     })
-  //   //     .then(skus => {
-  //   //         let mostRecentReceipe = skus[0]
-  //   //         let dateMostRecente = new Date(mostRecentReceipe.data)
-
-  //   //         for (let sku of skus) {
-  //   //             let currentDate = new Date(sku.data)
-
-  //   //             if (currentDate > dateMostRecente) {
-  //   //                 dateMostRecente = currentDate
-  //   //                 finalMostRecentReceipe = sku
-  //   //             }
-  //   //         }
-
-  //   //         setProduct(finalMostRecentReceipe)
-  //   //     })
-  // }
+    setProduct(extractedFields)
+   }
 
   return (
     <div>
@@ -176,13 +161,14 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
         <button className="pointer ml5 h2 bg-green ba b--black-10">
           Buscar Receita
         </button>
-        {/* <button
+
+        <button
           type="submit"
           className="pointer ml5 h2 bg-blue ba b--black-10"
           onClick={searchMostRecentSku}
         >
           Buscar Receita Mais Recente
-        </button> */}
+        </button>
       </form>
 
       {idNotSent && (

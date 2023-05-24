@@ -2,16 +2,12 @@ import { useMutation } from 'react-apollo'
 import { useProduct } from 'vtex.product-context'
 import React, { FormEvent, useState } from 'react'
 
-import SendReview from '../graphql/queries/sendFormReview.gql'
+import SEND_FORM_REVIEW from '../graphql/queries/SEND_FORM_REVIEW.gql'
 
 const SendReviewForm: StorefrontFunctionComponent = () => {
   const productContextValue = useProduct()
 
-  const [data] = useMutation(SendReview)
-
-  // utilizar caso não seja utilizado o useProduct()
-
-  // const [produto, setProduto] = useState('');
+  const [data] = useMutation(SEND_FORM_REVIEW)
 
   const [date, setDate] = useState('')
   const [usuario, setUsuario] = useState('')
@@ -23,42 +19,39 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
   const [usuarioVazio, setUsuarioVazio] = useState(false)
   const [notaVazia, setNotaVazia] = useState(false)
 
+  const resetStates = () => {
+    setSucesso(false)
+    setDataVazia(false)
+    setUsuarioVazio(false)
+    setNotaVazia(false)
+  }
+
   const sendReview = async (e: FormEvent) => {
     e.preventDefault()
-    setSucesso(false)
 
-    const productIsEmpty = false
-    let dataIsEmpty = false
-    let usuarioIsEmpty = false
-    let notaIsEmpty = false
+    resetStates()
 
-    // utilizar caso não seja utilizado o useProduct()
+    if(!productContextValue?.selectedItem?.itemId) {
+      setProdutoVazio(true)
+      return
+    }
 
-    // if (!produto)
-    //     productIsEmpty = true
+    if (!date) setDataVazia(true)
 
-    if (!date) dataIsEmpty = true
+    if(!usuario) setUsuarioVazio(true)
 
-    if (!usuario) usuarioIsEmpty = true
+    if(!nota) setNotaVazia(true)
 
-    if (!nota) notaIsEmpty = true
+    if(!nota || !usuario || !date) return
 
-    setProdutoVazio(productIsEmpty)
-    setDataVazia(dataIsEmpty)
-    setUsuarioVazio(usuarioIsEmpty)
-    setNotaVazia(notaIsEmpty)
-
-    // incluir !produto caso não seja utilizado o useProduct()
-    if (!date || !usuario || !nota) return
-
-    data({
+    await data({
       variables: {
-        dataEntity: 'Reviews',
+        dataEntity: 'Teste4Reviews',
         account: 'estagioacct',
-        schema: 'Reviews',
+        schema: 'Ratings',
         document: {
           document: {
-            userName: usuario,
+            usuario: usuario,
             data: date,
             nota,
             comentario,
@@ -66,30 +59,9 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
           },
         },
       },
-    }).then((dados) => {
+    }).then(() => {
       setSucesso(true)
     })
-
-    // await fetch(`/api/dataentities/Reviews/documents?_schema=Reviews`, {
-    //     headers: {
-    //         "Content-Type": "application/json"
-    //     },
-    //     method: "POST",
-    //     body: JSON.stringify({
-    //         //utilizar produto caso não seja utilizad o useProduct()
-    //         'produto': productContextValue?.selectedItem?.itemId,
-    //         'data': date,
-    //         'usuario': usuario,
-    //         'nota': nota,
-    //         'comentario': comentario
-    //     })
-    // })
-    //     .then(data => {
-    //         return data.json()
-    //     })
-    //     .then(() => {
-    //         setSucesso(true)
-    //     })
   }
 
   return (
@@ -107,7 +79,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
           placeholder="Produto"
           disabled
         />
-        {produtoVazio && <div className="f6 lh-copy tc red b">Campo Vazio</div>}
+        {produtoVazio && <div className="f6 lh-copy tc red b">Você não está em um contexto de produto</div>}
 
         <label className="db mb2" htmlFor="data">
           Data:
@@ -121,7 +93,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
           placeholder="Data da avaliação"
           onChange={(e) => setDate(e.target.value)}
         />
-        {dataVazia && <div className="f6 lh-copy tc  red b">Campo Vazio</div>}
+        {dataVazia && <div className="f6 lh-copy tc  red b">Campo data deve ser preenchido</div>}
 
         <label className="db mb2" htmlFor="sku">
           Usuário:
@@ -136,7 +108,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
           onChange={(e) => setUsuario(e.target.value)}
         />
         {usuarioVazio && (
-          <div className="f6 lh-copy tc  red b">Campo Vazio</div>
+          <div className="f6 lh-copy tc  red b">Campo usuário deve ser preenchido</div>
         )}
 
         <label className="db mb2" htmlFor="sku">
@@ -151,7 +123,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
           placeholder="Nota"
           onChange={(e) => setNota(e.target.value)}
         />
-        {notaVazia && <div className="f6 lh-copy tc red b">Campo Vazio</div>}
+        {notaVazia && <div className="f6 lh-copy tc red b">Campo nota deve ser preenchido</div>}
 
         <label className="db mb2" htmlFor="sku">
           Comentário:
