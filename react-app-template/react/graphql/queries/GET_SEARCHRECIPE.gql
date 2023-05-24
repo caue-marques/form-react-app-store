@@ -1,0 +1,12 @@
+query GET_SEARCHRECIPE {
+  documents(
+    acronym: "Receitas"
+    fields: ["id", "id_sku", "titulo", "data", "conteudo", "produtos"]
+  ) {
+    id
+    fields {
+      key
+      value
+    }
+  }
+}

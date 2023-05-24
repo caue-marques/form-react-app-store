@@ -5,6 +5,7 @@
     "test": "vtex-test-tools test"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.14",
     "@types/react-slick": "^0.23.10",
     "apollo-client": "^2.6.8",
     "react": "^16.12.0",
@@ -20,12 +21,13 @@
     "@vtex/test-tools": "^3.3.2",
     "@vtex/tsconfig": "^0.4.4",
     "apollo-cache-inmemory": "^1.6.5",
-    "estagioacct.form-react": "https://cauemarquesreact--estagioacct.myvtex.com/_v/private/typings/linked/v1/estagioacct.form-react@0.0.1+build1684341365/public/@types/estagioacct.form-react",
-    "graphql": "^14.6.0",
+    "estagioacct.form-react": "https://cauemarquesreact--estagioacct.myvtex.com/_v/private/typings/linked/v1/estagioacct.form-react@0.0.1+build1684862698/public/@types/estagioacct.form-react",
+    "graphql": "^16.6.0",
     "typescript": "3.9.7",
     "vtex.css-handles": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.css-handles@0.4.4/public/@types/vtex.css-handles",
     "vtex.product-context": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.product-context@0.10.0/public/@types/vtex.product-context",
     "vtex.render-runtime": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.132.4/public/@types/vtex.render-runtime",
+    "vtex.store-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store-graphql@2.162.0/public/@types/vtex.store-graphql",
     "vtex.styleguide": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.146.4/public/@types/vtex.styleguide"
   },
   "resolutions": {
