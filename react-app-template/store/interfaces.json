@@ -1,8 +1,0 @@
-{
-    "search-form": {
-        "component": "SearchSKUForm"
-    },
-    "send-review": {
-        "component": "SendReviewForm"
-    }
-}
