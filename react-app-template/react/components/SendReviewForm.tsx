@@ -7,7 +7,7 @@ import SEND_FORM_REVIEW from '../graphql/queries/SEND_FORM_REVIEW.gql'
 const SendReviewForm: StorefrontFunctionComponent = () => {
   const productContextValue = useProduct()
 
-  const [data] = useMutation(SEND_FORM_REVIEW)
+  const [sendForm] = useMutation(SEND_FORM_REVIEW)
 
   const [date, setDate] = useState('')
   const [usuario, setUsuario] = useState('')
@@ -44,24 +44,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
 
     if(!nota || !usuario || !date) return
 
-    await data({
-      variables: {
-        dataEntity: 'Teste4Reviews',
-        account: 'estagioacct',
-        schema: 'Ratings',
-        document: {
-          document: {
-            usuario: usuario,
-            data: date,
-            nota,
-            comentario,
-            produto: productContextValue?.selectedItem?.itemId,
-          },
-        },
-      },
-    }).then(() => {
-      setSucesso(true)
-    })
+    
   }
 
   return (
