@@ -53,13 +53,10 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
           schema: 'Ratings',
           document: {
             document: {
-              // eslint-disable-next-line object-shorthand
-              usuario: usuario,
+              usuario,
               data: date,
-              // eslint-disable-next-line object-shorthand
-              nota: nota,
-              // eslint-disable-next-line object-shorthand
-              comentario: comentario,
+              nota,
+              comentario,
               produto: productContextValue?.selectedItem?.itemId,
             },
           },
