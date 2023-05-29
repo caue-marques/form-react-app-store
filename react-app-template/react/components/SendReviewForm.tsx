@@ -33,6 +33,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
 
     if (!productContextValue?.selectedItem?.itemId) {
       setProdutoVazio(true)
+
       return
     }
 
@@ -52,10 +53,13 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
           schema: 'Ratings',
           document: {
             document: {
+              // eslint-disable-next-line object-shorthand
               usuario: usuario,
               data: date,
-              nota,
-              comentario,
+              // eslint-disable-next-line object-shorthand
+              nota: nota,
+              // eslint-disable-next-line object-shorthand
+              comentario: comentario,
               produto: productContextValue?.selectedItem?.itemId,
             },
           },
@@ -63,7 +67,7 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
       })
 
       setSucesso(true)
-    } catch (e) {
+    } catch (err) {
       setSucesso(false)
     }
   }
