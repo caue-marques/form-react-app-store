@@ -31,20 +31,41 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
 
     resetStates()
 
-    if(!productContextValue?.selectedItem?.itemId) {
+    if (!productContextValue?.selectedItem?.itemId) {
       setProdutoVazio(true)
       return
     }
 
     if (!date) setDataVazia(true)
 
-    if(!usuario) setUsuarioVazio(true)
+    if (!usuario) setUsuarioVazio(true)
 
-    if(!nota) setNotaVazia(true)
+    if (!nota) setNotaVazia(true)
 
-    if(!nota || !usuario || !date) return
+    if (!nota || !usuario || !date) return
 
-    
+    try {
+      await sendForm({
+        variables: {
+          dataEntity: 'Teste4Reviews',
+          account: 'estagioacct',
+          schema: 'Ratings',
+          document: {
+            document: {
+              usuario: usuario,
+              data: date,
+              nota,
+              comentario,
+              produto: productContextValue?.selectedItem?.itemId,
+            },
+          },
+        },
+      })
+
+      setSucesso(true)
+    } catch (e) {
+      setSucesso(false)
+    }
   }
 
   return (
@@ -62,7 +83,11 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
           placeholder="Produto"
           disabled
         />
-        {produtoVazio && <div className="f6 lh-copy tc red b">Você não está em um contexto de produto</div>}
+        {produtoVazio && (
+          <div className="f6 lh-copy tc red b">
+            Você não está em um contexto de produto
+          </div>
+        )}
 
         <label className="db mb2" htmlFor="data">
           Data:
@@ -76,7 +101,11 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
           placeholder="Data da avaliação"
           onChange={(e) => setDate(e.target.value)}
         />
-        {dataVazia && <div className="f6 lh-copy tc  red b">Campo data deve ser preenchido</div>}
+        {dataVazia && (
+          <div className="f6 lh-copy tc  red b">
+            Campo data deve ser preenchido
+          </div>
+        )}
 
         <label className="db mb2" htmlFor="sku">
           Usuário:
@@ -91,7 +120,9 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
           onChange={(e) => setUsuario(e.target.value)}
         />
         {usuarioVazio && (
-          <div className="f6 lh-copy tc  red b">Campo usuário deve ser preenchido</div>
+          <div className="f6 lh-copy tc  red b">
+            Campo usuário deve ser preenchido
+          </div>
         )}
 
         <label className="db mb2" htmlFor="sku">
@@ -106,7 +137,11 @@ const SendReviewForm: StorefrontFunctionComponent = () => {
           placeholder="Nota"
           onChange={(e) => setNota(e.target.value)}
         />
-        {notaVazia && <div className="f6 lh-copy tc red b">Campo nota deve ser preenchido</div>}
+        {notaVazia && (
+          <div className="f6 lh-copy tc red b">
+            Campo nota deve ser preenchido
+          </div>
+        )}
 
         <label className="db mb2" htmlFor="sku">
           Comentário:
