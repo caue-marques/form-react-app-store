@@ -18,6 +18,11 @@ interface Documents {
 const SearchSKUForm: StorefrontFunctionComponent = () => {
   const { data, loading, refetch } = useQuery<Documents>(GET_SEARCHRECIPE, {
     ssr: false,
+    variables: {
+      account: 'estagioacct',
+      acronym: 'Receitas',
+      fields: ['id', 'id_sku', 'titulo', 'data', 'conteudo', 'produtos'],
+    },
   })
 
   const productContextValue = useProduct()
@@ -62,7 +67,7 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
       return
     }
 
-    const productFinded = data.documents.find(
+    const productFinded = data?.documents.find(
       (doc) => doc.fields[1].value === id
     )
 
@@ -122,7 +127,7 @@ const SearchSKUForm: StorefrontFunctionComponent = () => {
       return
     }
 
-    const mostRecenteReceipe = data.documents.reduce((a,b) => a.fields[3].value > b.fields[3].value ? a : b).fields
+    const mostRecenteReceipe = data?.documents.reduce((a,b) => a.fields[3].value > b.fields[3].value ? a : b).fields
 
     const findFieldValue = (key: string) => {
       return (
